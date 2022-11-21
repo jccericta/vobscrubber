@@ -6,6 +6,7 @@
 #r @"bin\Debug\net7.0\FSharp.MetadataFormat.dll"
 
 open System.Text
+open System.IO
 open PdfSharp.Pdf.IO
 open PdfSharp.Pdf.Content
 open PdfSharp.Pdf.Content.Objects
@@ -16,18 +17,20 @@ open FSharp.MetadataFormat.ValueReader
 open FSharp.Data
 
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance)
-
-let path = @"../VOB Hansei.pdf"
-let doc = PdfSharp.Pdf.IO.PdfReader.Open(path, PdfDocumentOpenMode.InformationOnly)
+let path = @"./../VOBScrubber/Test.pdf"
+let docPath = PdfSharp.Pdf.IO.PdfReader.Open(path, PdfDocumentOpenMode.InformationOnly).FullPath
+let doc = PdfSharp.Pdf.IO.PdfReader.Open(docPath, PdfDocumentOpenMode.InformationOnly)
 let form = doc.AcroForm
+
+if form = null then
+   printfn "Pdf has no forms" |> exit -1 
+
 let fields = form.Fields
 
 let guid = doc.Guid |> printfn "'Guid': { %A }"
 
-let objStr = System.Text.StringBuilder()
-
-fields.Names
-fields.DescendantNames |> printfn "%A"
+// fields.Names
+// fields.DescendantNames |> printfn "%A"
 
 let loop (fields:PdfSharp.Pdf.AcroForms.PdfAcroField.PdfAcroFieldCollection) = 
    (
