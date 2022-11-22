@@ -83,6 +83,44 @@ let rec loop2 (fields:PdfSharp.Pdf.AcroForms.PdfAcroField.PdfAcroFieldCollection
 
 do loop2 fields
 
+let rec loop3 (fields:PdfSharp.Pdf.AcroForms.PdfAcroField.PdfAcroFieldCollection, sb:StringBuilder)  = 
+   let fieldNames = fields.Names
+   for fn in fieldNames do
+      if fields.Item(fn).HasKids then
+         if fields.Item(fn).GetType() = typeof<PdfSharp.Pdf.AcroForms.PdfCheckBoxField> then
+            if fields.Item(fn).Value <> null then
+               printfn "{'%s': %s}," (fields.Item(fn).Name) (fields.Item(fn).Value.ToString())
+               //sb.Append("{ '"+(fields.Item(fn).Name) + "': " + (fields.Item(fn).Value.ToString()) + " }")
+            else
+               printfn "{'%s': %s}," (fields.Item(fn).Name) null
+               //sb.Append("{ '"+(fields.Item(fn).Name) + "': " + null + " }")
+         else if fields.Item(fn).GetType() = typeof<PdfSharp.Pdf.AcroForms.PdfTextField> then
+            if fields.Item(fn).Value <> null then
+               printfn "{'%s': %s}," (fields.Item(fn).Name) (fields.Item(fn).Value.ToString())
+               //sb.Append("{ '"+(fields.Item(fn).Name) + "': " + (fields.Item(fn).Value.ToString()) + " }")
+            else
+               printfn "{'%s': %s}," (fields.Item(fn).Name) null
+               //sb.Append("{ '"+(fields.Item(fn).Name) + "': " + null + " }")
+         else
+            printfn "'%s': [ " (fields.Item(fn).Name)
+            //sb.Append("'"+(fields.Item(fn).Name) + "': [ ")
+            let fieldKids = fields.Item(fn).Fields
+            loop3 (fieldKids,sb)
+      else
+         let field = fields.Item(fn).Name
+         if fields.Item(fn).Value <> null then
+            let fieldValue = fields.Item(fn).Value.ToString()
+            printfn "{'%s': %s}," field fieldValue
+            //sb.Append("{ '"+ field + "': " + fieldValue + " }")
+         else
+            printfn "'%s': %s," field null
+            // /sb.Append("{ '"+field + "': " + null + " }")
+            //sb.Append(",")
+   printfn "],"
+   //sb.Append "],"
+
+let sb = StringBuilder()   
+loop3 (fields,sb)
 
 
 
