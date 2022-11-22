@@ -3,9 +3,6 @@ open System.Text
 open PdfSharp.Pdf.IO
 open PdfSharp.Pdf.Content
 open PdfSharp.Pdf.Content.Objects
-open FSharp.Markdown
-open FSharp.Markdown.Pdf
-open FSharp.MetadataFormat.ValueReader
 open FSharp.Data
 
 let rec extractText(content:CObject, sb:StringBuilder) =

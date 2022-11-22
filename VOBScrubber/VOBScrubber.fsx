@@ -1,19 +1,11 @@
 #r @"bin\Debug\net7.0\FSharp.Core.dll"
 #r @"bin\Debug\net7.0\PdfSharp.dll"
 #r @"bin\Debug\net7.0\PdfSharp.Charting.dll"
-#r @"bin\Debug\net7.0\FSharp.Markdown.dll"
-#r @"bin\Debug\net7.0\FSharp.Markdown.Pdf.dll"
-#r @"bin\Debug\net7.0\FSharp.MetadataFormat.dll"
 
 open System.Text
-open System.IO
 open PdfSharp.Pdf.IO
 open PdfSharp.Pdf.Content
 open PdfSharp.Pdf.Content.Objects
-open FSharp.Markdown
-open FSharp.Markdown.Pdf
-open FSharp.MetadataFormat.Reader
-open FSharp.MetadataFormat.ValueReader
 open FSharp.Data
 
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance)
@@ -26,7 +18,6 @@ if form = null then
    printfn "Pdf has no forms" |> exit -1 
 
 let fields = form.Fields
-let guid = doc.Guid |> printfn "'Guid': { %A }"
 
 // fields.Names
 // fields.DescendantNames |> printfn "%A"
@@ -120,6 +111,9 @@ do loop2 fields*)
 
 // let sb = StringBuilder()   
 // loop3 (fields,sb)
+let sb = StringBuilder()
+let guid = doc.Guid 
+sb.Append(sprintf "{Guid: %A}," guid) |> ignore 
 
 let rec loop4 (fields:PdfSharp.Pdf.AcroForms.PdfAcroField.PdfAcroFieldCollection, sb:StringBuilder)  = 
    let fieldNames = fields.Names
@@ -131,36 +125,31 @@ let rec loop4 (fields:PdfSharp.Pdf.AcroForms.PdfAcroField.PdfAcroFieldCollection
             let checkedBoxName = checkbox.CheckedName
             let checkedBoxVal = checkbox.Value
             if checkedBoxVal <> null then
-               printfn "{'%s': %s %s}," checkedBox checkedBoxName (checkedBoxVal.ToString())
+               sb.Append(sprintf " {'%s': %s %s}" checkedBox checkedBoxName (checkedBoxVal.ToString())) |> ignore
             else
-               printfn "{'%s': %s}," checkedBox null
+               sb.Append(sprintf " {'%s': %s}" checkedBox null) |> ignore
          else if fields.Item(fn).GetType() = typeof<PdfSharp.Pdf.AcroForms.PdfTextField> then
             let textField:PdfSharp.Pdf.AcroForms.PdfTextField = fields.Item(fn) |> unbox
             let textFieldName = textField.Name
             let textFieldVal = textField.Text
             if textFieldVal <> null then
-               printfn "{'%s': %s}," textFieldName textFieldVal
+               sb.Append(sprintf " {'%s': %s}" textFieldName textFieldVal) |> ignore
             else
-               printfn "{'%s': %s}," textFieldName null
+               sb.Append(sprintf " {'%s': %s}" textFieldName null) |> ignore
          else
-            printfn "'%s': [ " (fields.Item(fn).Name)
+            sb.Append(sprintf " '%s':[" (fields.Item(fn).Name)) |> ignore
             let fieldKids = fields.Item(fn).Fields
             loop4 (fieldKids,sb)
       else
          let field = fields.Item(fn).Name
          if fields.Item(fn).Value <> null then
             let fieldValue = fields.Item(fn).Value.ToString()
-            printfn "{'%s': %s}," field fieldValue
-            //sb.Append("{ '"+ field + "': " + fieldValue + " }")
+            sb.Append(sprintf "{'%s': %s}," field fieldValue) |> ignore
          else
-            printfn "'%s': %s," field null
-            // /sb.Append("{ '"+field + "': " + null + " }")
-            //sb.Append(",")
+            sb.Append(sprintf "{'%s': %s}," field null) |> ignore
    )
-   printfn "],"
+   sb.Append("] ") |> ignore
 
-let sb = StringBuilder()   
 loop4 (fields,sb)
-
-
+sb.ToString()
 
