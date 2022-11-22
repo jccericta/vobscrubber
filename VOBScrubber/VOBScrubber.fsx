@@ -113,7 +113,7 @@ do loop2 fields*)
 // loop3 (fields,sb)
 let sb = StringBuilder()
 let guid = doc.Guid 
-sb.Append(sprintf "{Guid: %A}," guid) |> ignore 
+sb.Append(sprintf "{'Guid': %A}," guid) |> ignore 
 
 let rec loop4 (fields:PdfSharp.Pdf.AcroForms.PdfAcroField.PdfAcroFieldCollection, sb:StringBuilder)  = 
    let fieldNames = fields.Names
@@ -152,4 +152,3 @@ let rec loop4 (fields:PdfSharp.Pdf.AcroForms.PdfAcroField.PdfAcroFieldCollection
 
 loop4 (fields,sb)
 sb.ToString()
-
