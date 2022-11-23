@@ -3,12 +3,13 @@
 #r @"bin\Debug\net7.0\PdfSharp.Charting.dll"
 #r @"bin\Debug\net7.0\FSharp.Data.dll"
 
+open System.IO
 open System.Text
-open PdfSharp.Pdf.IO
+open System.Text.Json
 open PdfSharp.Pdf.Content
 open PdfSharp.Pdf.Content.Objects
+open PdfSharp.Pdf.IO
 open FSharp.Data
-open System.Text.Json
 
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance)
 let path = @"../../VOBScrubber/Test.pdf"
@@ -67,6 +68,4 @@ let str = sb.ToString()
 let jsonStr = str |> JsonValue.String
 let jsonToStr = jsonStr.ToString()
 jsonToStr
-
-
 
