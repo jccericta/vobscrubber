@@ -4,6 +4,7 @@ open PdfSharp.Pdf.IO
 open PdfSharp.Pdf.Content
 open PdfSharp.Pdf.Content.Objects
 open FSharp.Data
+open System.Text.Json
 
 let rec extractText(content:CObject, sb:StringBuilder) =
    match content with

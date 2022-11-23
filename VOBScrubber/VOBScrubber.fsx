@@ -7,6 +7,7 @@ open PdfSharp.Pdf.IO
 open PdfSharp.Pdf.Content
 open PdfSharp.Pdf.Content.Objects
 open FSharp.Data
+open System.Text.Json
 
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance)
 let path = @"../../VOBScrubber/Test.pdf"
@@ -152,3 +153,4 @@ let rec loop4 (fields:PdfSharp.Pdf.AcroForms.PdfAcroField.PdfAcroFieldCollection
 
 loop4 (fields,sb)
 sb.ToString()
+
