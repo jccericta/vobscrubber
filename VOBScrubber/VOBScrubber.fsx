@@ -4,6 +4,7 @@
 #r @"bin\Debug\net7.0\FSharp.Data.dll"
 
 open System.IO
+open System.Runtime.Serialization.Json
 open System.Text
 open System.Text.Json
 open PdfSharp.Pdf.Content
@@ -60,12 +61,30 @@ let rec loop4 (fields:PdfSharp.Pdf.AcroForms.PdfAcroField.PdfAcroFieldCollection
    sb.Replace(",]", "]") |> ignore
 
 let sb = StringBuilder()
-let guid = doc.Guid 
+let guid = 
+   let guid'= doc.Guid
+   if guid'.ToString() = "" then
+      new System.Guid()
+   else  
+      guid'
 sb.Append("[")
 //sb.Append(sp1rintf "[{'Guid': '%A'}," guid) |> ignore 
 loop4 (fields,sb)
 let str = sb.ToString()
 let jsonStr = str |> JsonValue.String
+let jsonFile = @"../../VOBScrubber/Hansei.VOB." + guid.ToString() + ".json"
 let jsonToStr = jsonStr.ToString()
-jsonToStr
 
+let saveJsonToFile (json:string, path:string) = 
+   let fs = new FileStream(path, FileMode.OpenOrCreate)
+   (new DataContractJsonSerializer(typeof<string>)).WriteObject(fs,json)
+
+saveJsonToFile(jsonToStr, jsonFile)
+(*
+let jsonToStr = jsonStr.ToString()
+let addText (fs:FileStream, str:string) = 
+   let (text:byte[]) = (new UTF8Encoding(true)).GetBytes(str)
+   fs.Write(text, 0, text.Length)
+let fs = System.IO.File.Create(jsonFile)   
+addText(fs,jsonToStr)
+*)

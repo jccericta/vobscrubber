@@ -1,6 +1,7 @@
 ﻿module PdfScrubber
 
 open System.IO
+open System.Runtime.Serialization.Json
 open System.Text
 open System.Text.Json
 open PdfSharp.Pdf.Content
@@ -86,10 +87,18 @@ let rec loop4 (fields:PdfSharp.Pdf.AcroForms.PdfAcroField.PdfAcroFieldCollection
 
 let sb = StringBuilder()
 let guid = doc.Guid 
-sb.Append("[")
+sb.Append("[") |> ignore
 loop4 (fields,sb)
 let str = sb.ToString()
 let jsonStr = str |> JsonValue.String
+let jsonFile = @"../../VOBScrubber/Hansei.VOB." + guid.ToString() + ".json"
 let jsonToStr = jsonStr.ToString()
-jsonToStr
+
+let saveJsonToFile (json:string, path:string) = 
+   let fs = new FileStream(path, FileMode.OpenOrCreate)
+   (new DataContractJsonSerializer(typeof<string>)).WriteObject(fs,json)
+
+saveJsonToFile(jsonToStr, jsonFile)
+//let jsonToStr = jsonStr.ToString()
+
 
