@@ -68,7 +68,7 @@ let guid =
    else  
       guid'
 sb.Append("[")
-//sb.Append(sp1rintf "[{'Guid': '%A'}," guid) |> ignore 
+
 loop4 (fields,sb)
 let str = sb.ToString()
 let jsonStr = str |> JsonValue.String
@@ -80,6 +80,7 @@ let saveJsonToFile (json:string, path:string) =
    (new DataContractJsonSerializer(typeof<string>)).WriteObject(fs,json)
 
 saveJsonToFile(jsonToStr, jsonFile)
+
 (*
 let jsonToStr = jsonStr.ToString()
 let addText (fs:FileStream, str:string) = 
