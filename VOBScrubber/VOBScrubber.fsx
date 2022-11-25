@@ -33,7 +33,7 @@ let rec loop4 (fields:PdfSharp.Pdf.AcroForms.PdfAcroField.PdfAcroFieldCollection
             let checkedBoxName = checkbox.CheckedName
             let checkedBoxVal = checkbox.Value
             if checkedBoxVal <> null then
-               sb.Append(sprintf """{ "%s": "%s" "%s"},""" checkedBox checkedBoxName (checkedBoxVal.ToString())) |> ignore
+               sb.Append(sprintf """{"%s": "%s" "%s"},""" checkedBox checkedBoxName (checkedBoxVal.ToString())) |> ignore
             else
                sb.Append(sprintf """{"%s": "%s"},""" checkedBox "") |> ignore
          else if fields.Item(fn).GetType() = typeof<PdfSharp.Pdf.AcroForms.PdfTextField> then
@@ -45,7 +45,7 @@ let rec loop4 (fields:PdfSharp.Pdf.AcroForms.PdfAcroField.PdfAcroFieldCollection
             else
                sb.Append(sprintf """{"%s": "%s"},""" textFieldName "") |> ignore
          else
-            sb.Append(sprintf """"%s":[""" (fields.Item(fn).Name)) |> ignore
+            sb.Append(sprintf """{"%s":[""" (fields.Item(fn).Name)) |> ignore
             let fieldKids = fields.Item(fn).Fields
             loop4 (fieldKids,sb)
       else
@@ -56,9 +56,7 @@ let rec loop4 (fields:PdfSharp.Pdf.AcroForms.PdfAcroField.PdfAcroFieldCollection
          else
             sb.Append(sprintf """{"%s": "%s"},""" field "") |> ignore
    )
-   sb.Append("]") |> ignore
-   sb.AppendJoin("\n", ",") |> ignore
-   sb.Replace(",]", "]") |> ignore
+   sb.Append("]},") |> ignore
 
 let sb = StringBuilder()
 let guid = 
@@ -68,18 +66,22 @@ let guid =
    else  
       guid'
 sb.Append("[")
-
 loop4 (fields,sb)
-let str = sb.ToString()
-let jsonStr = str |> JsonValue.String
-let jsonFile = @"../../VOBScrubber/Hansei.VOB." + guid.ToString() + ".json"
-let jsonToStr = jsonStr.ToString()
+sb.AppendJoin("\n", ",") |> ignore
+sb.Replace(",]", "]") |> ignore
+sb.Replace(",}", "}") |> ignore
+sb.Replace("},,", "") |> ignore
 
+let str = sb.ToString()
+let json = JsonValue.Parse(str)
+let jsonStr = json.ToString()
+
+let jsonFile = @"../../VOBScrubber/Hansei.VOB." + guid.ToString() + ".json"
 let saveJsonToFile (json:string, path:string) = 
    let fs = new FileStream(path, FileMode.OpenOrCreate)
    (new DataContractJsonSerializer(typeof<string>)).WriteObject(fs,json)
 
-saveJsonToFile(jsonToStr, jsonFile)
+saveJsonToFile(jsonStr, jsonFile)
 
 (*
 let jsonToStr = jsonStr.ToString()
