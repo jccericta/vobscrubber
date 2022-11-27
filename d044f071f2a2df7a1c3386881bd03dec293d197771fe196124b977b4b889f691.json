@@ -1,0 +1,27 @@
+{
+  "product": "pdf2Data",
+  "licensee": {
+    "company": "N/A",
+    "name": "John Ericta",
+    "email": "jericta@steelgem.com"
+  },
+  "key": "d044f071f2a2df7a1c3386881bd03dec293d197771fe196124b977b4b889f691",
+  "creationDate": "2022-11-16",
+  "expirationDate": "2022-12-16",
+  "onExpiration": "grace",
+  "gracePeriod": "1d0h0m",
+  "platform": "any",
+  "licenseType": "trial",
+  "productVersion": {
+    "major": 3
+  },
+  "limits": {
+    "default": {
+      "limitType": "unlimited",
+      "sendEvents": false
+    }
+  },
+  "licenseVersion": "1.0.0",
+  "sendStatistics": "disabled",
+  "signature": "TLIO8VNt5DiHbuJCh4JKFO3Gie63G1zC9HhpWCwTg3x1FUyJz/qZXUBgbXy/nAGS8jzSfFjRXxn/VyloqUGrR8LuTDYt/BhOoGALHlV2MPkMipHJKqHkTf6ORkg6Qool8k704raIt4xo9/6OObqQFmoZMUBRjuQm8jgCI0ya2eVzsJptgjHx3W1S/cN2335I9fvCR66MhugbaXn9W/b3izbqsnCZJo9OJpWgD2upbL9pT2KlDMSC5bdSrNvMYXAcgtZ1xKEQbI0td1i1plHObiLGkaA5IxBkDHbfH8moXrIG6YNbOwZ+O1ojCv+nSy4Do4/ZxSnuzh5t8szOZ8KWRHhciU3rwEumvh48xBujqlxG16RSZY/Ku4PbY3MfwkZlSgiZm7ZQrtFDVgFjsw5kgq3uOpoLIp1lsKNb2kgPlvc9bV9bzUkrHiqH9e1OqqRsrsxMHVE+hhct9T1Rfsn6dRKyFCfbeJmBepSlRbOGwOWjqTm/jSduWXSXsQH2qWG9NCh3zu3BzCB3rAB2KUPzcnZHYy8xfsUV8/qmQQSuquMQg7poyW1K+F9/bTQGA2cW+boCtN4N9kx9ZpLRIZDk2kE00piF62kYlKYwT7Lc4qCeHXizhlkMTDSbv+X7lOO4UopYUbdmfwiUKowMwPMRltCFwcTDP7o84eDaU/F6Fjg="
+}

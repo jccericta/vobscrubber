@@ -1,4 +1,4 @@
 VOBScrubber/[Bb]in/
 VOBScrubber/[Oo]bj/
-*.pdf
-*.json
+pdfs/*
+json/*
