@@ -14,7 +14,7 @@ open FSharp.Data
 
 // Take file at path, grab the full path and open the pdf reader stream, then scan for Acro forms
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance)
-let path = @"../../VOBScrubber/pdfs/Ronald Robinson VOB The Edge 10.20.2021.pdf"
+let path = @"../../VOBScrubber/pdfs/Test.pdf"
 let docPath = PdfSharp.Pdf.IO.PdfReader.Open(path, PdfDocumentOpenMode.InformationOnly).FullPath
 let doc = PdfSharp.Pdf.IO.PdfReader.Open(docPath, PdfDocumentOpenMode.InformationOnly)
 let form = doc.AcroForm
