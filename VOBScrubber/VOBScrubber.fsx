@@ -14,7 +14,8 @@ open FSharp.Data
 
 // Take file at path, grab the full path and open the pdf reader stream, then scan for Acro forms
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance)
-let path = @"../../VOBScrubber/pdfs/Test.pdf"
+let currDir = System.IO.Directory.GetCurrentDirectory() + @"\VOBScrubber\"
+let path = currDir + @"\pdfs\Test.pdf"
 let docPath = PdfSharp.Pdf.IO.PdfReader.Open(path, PdfDocumentOpenMode.InformationOnly).FullPath
 let doc = PdfSharp.Pdf.IO.PdfReader.Open(docPath, PdfDocumentOpenMode.InformationOnly)
 let form = doc.AcroForm
@@ -91,7 +92,7 @@ let json = JsonValue.Parse(str)
 let jsonStr = json.ToString()
 
 // save json file with json string serialized
-let jsonFile = @"../../VOBScrubber/json/Hansei.VOB." + guid.ToString() + ".json"
+let jsonFile = currDir + @"\json\Hansei.VOB." + guid.ToString() + ".json"
 let saveJsonToFile (json:string, path:string) = 
    let fs = new FileStream(path, FileMode.OpenOrCreate)
    (new DataContractJsonSerializer(typeof<string>)).WriteObject(fs,json)
