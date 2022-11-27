@@ -88,7 +88,7 @@ let json = JsonValue.Parse(str)
 let jsonStr = json.ToString()
 
 // save json file with json string serialized
-let jsonFile = @"../../VOBScrubber/Hansei.VOB." + guid.ToString() + ".json"
+let jsonFile = @"../../VOBScrubber/json/Hansei.VOB." + guid.ToString() + ".json"
 let saveJsonToFile (json:string, path:string) = 
    let fs = new FileStream(path, FileMode.OpenOrCreate)
    (new DataContractJsonSerializer(typeof<string>)).WriteObject(fs,json)
