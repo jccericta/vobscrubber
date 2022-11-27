@@ -2,3 +2,4 @@ VOBScrubber/[Bb]in/
 VOBScrubber/[Oo]bj/
 pdfs/*
 json/*
+.fake

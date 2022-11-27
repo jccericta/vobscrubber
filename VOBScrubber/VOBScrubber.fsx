@@ -38,11 +38,7 @@ let rec loop4 (fields:PdfSharp.Pdf.AcroForms.PdfAcroField.PdfAcroFieldCollection
             let checkedBoxName = checkbox.CheckedName
             let checkedBoxVal = checkbox.Value
             if checkedBoxVal <> null then
-<<<<<<< HEAD
-               sb.Append(sprintf """{"%s": "%s" "%s"},""" checkedBox checkedBoxName (checkedBoxVal.ToString())) |> ignore
-=======
                sb.Append(sprintf """{"%s": "(%s,%s)"},""" checkedBox checkedBoxName (checkedBoxVal.ToString())) |> ignore
->>>>>>> c914b78fff7ac314a0b61061706fcb6d76d60301
             else
                sb.Append(sprintf """{"%s": "%s"},""" checkedBox "") |> ignore
          else if fields.Item(fn).GetType() = typeof<PdfSharp.Pdf.AcroForms.PdfTextField> then
@@ -74,20 +70,6 @@ let guid =
       new System.Guid()
    else  
       guid'
-<<<<<<< HEAD
-sb.Append("[")
-loop4 (fields,sb)
-sb.AppendJoin("\n", ",") |> ignore
-sb.Replace(",]", "]") |> ignore
-sb.Replace(",}", "}") |> ignore
-sb.Replace("},,", "") |> ignore
-
-let str = sb.ToString()
-let json = JsonValue.Parse(str)
-let jsonStr = json.ToString()
-
-let jsonFile = @"../../VOBScrubber/Hansei.VOB." + guid.ToString() + ".json"
-=======
 
 // the string to concatenate
 let sb = StringBuilder()
@@ -110,21 +92,16 @@ let jsonStr = json.ToString()
 
 // save json file with json string serialized
 let jsonFile = @"../../VOBScrubber/json/Hansei.VOB." + guid.ToString() + ".json"
->>>>>>> c914b78fff7ac314a0b61061706fcb6d76d60301
 let saveJsonToFile (json:string, path:string) = 
    let fs = new FileStream(path, FileMode.OpenOrCreate)
    (new DataContractJsonSerializer(typeof<string>)).WriteObject(fs,json)
    fs.Close()
 
-<<<<<<< HEAD
-saveJsonToFile(jsonStr, jsonFile)
-=======
 // save it
 saveJsonToFile(jsonStr, jsonFile)
 
 // close pdf
 doc.Close()
->>>>>>> c914b78fff7ac314a0b61061706fcb6d76d60301
 
 (*
 let jsonToStr = jsonStr.ToString()
