@@ -1,5 +1,5 @@
 VOBScrubber/[Bb]in/
 VOBScrubber/[Oo]bj/
-pdfs/*
-json/*
+pdfs/*.pdfs
+json/*.json
 .fake
