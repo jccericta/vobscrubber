@@ -8,6 +8,9 @@ open PdfSharp.Pdf.Content
 open PdfSharp.Pdf.Content.Objects
 open PdfSharp.Pdf.IO
 open FSharp.Data
+open iText
+open iText.Forms
+open iText.Kernel
 
 // Take file at path, grab the full path and open the pdf reader stream, then scan for Acro forms
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance)

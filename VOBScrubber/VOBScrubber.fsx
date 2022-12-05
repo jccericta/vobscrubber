@@ -2,6 +2,10 @@
 #r @"bin\Debug\net7.0\PdfSharp.dll"
 #r @"bin\Debug\net7.0\PdfSharp.Charting.dll"
 #r @"bin\Debug\net7.0\FSharp.Data.dll"
+#r @"bin\Debug\net7.0\itext.forms.dll"
+#r @"bin\Debug\net7.0\itext.kernel.dll"
+#r @"bin\Debug\net7.0\itext.io.dll"
+#r @"bin\Debug\net7.0\itext.commons.dll"
 
 open System.IO
 open System.Runtime.Serialization.Json
@@ -10,7 +14,9 @@ open System.Text.Json
 open PdfSharp.Pdf.Content
 open PdfSharp.Pdf.Content.Objects
 open PdfSharp.Pdf.IO
-open FSharp.Data
+open FSharp.Data 
+open iText.Forms
+open iText.Kernel
 
 // Take file at path, grab the full path and open the pdf reader stream, then scan for Acro forms
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance)

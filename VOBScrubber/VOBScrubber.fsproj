@@ -13,6 +13,9 @@
     <PackageReference Include="FSharp.Data" Version="5.0.2" />
     <PackageReference Include="FSharp.Markdown.Pdf" Version="0.3.0" />
     <PackageReference Include="FSharpMarkdown" Version="1.0.0" />
+    <PackageReference Include="itext7" Version="7.2.4" />
+    <PackageReference Include="itext7.commons" Version="7.2.4" />
+    <PackageReference Include="itext7.licensekey" Version="3.1.5" />
     <PackageReference Include="PdfSharp" Version="1.50.5147" />
   </ItemGroup>
 
