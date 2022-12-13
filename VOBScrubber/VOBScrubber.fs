@@ -11,6 +11,7 @@ open FSharp.Data
 open iText
 open iText.Forms
 open iText.Kernel
+open iText.Pdfocr
 
 // Take file at path, grab the full path and open the pdf reader stream, then scan for Acro forms
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance)
