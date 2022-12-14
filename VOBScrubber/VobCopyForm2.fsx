@@ -43,12 +43,14 @@ let copyPages (source:Pdf.PdfDocument) (target:Pdf.PdfDocument) =
     let ref = target.CreateNextIndirectReference()
     ref
 let pdfTarget = copyPages pdfSource pdfTarget'
-
 let pdfFormCopier = new PdfPageFormCopier()
 let copyPageForm (c:PdfPageFormCopier) (s:Pdf.PdfDocument) (t:Pdf.PdfDocument) = 
-    let pdfAcroForm' = PdfAcroForm.GetAcroForm(t, true)
     for i in 1 .. s.GetNumberOfPages() do
         c.Copy(s.GetPage(i),t.GetPage(i))
+    let pdfAcroForm' = PdfAcroForm.GetAcroForm(t, true)
+    let acfFields = pdfAcroForm'.GetFieldsForFlattening()
+    for acfField in acfFields do
+        pdfAcroForm'.AddFieldAppearanceToPage(acfField, t.GetPage(t.GetPageNumber(acfField.GetPdfObject())))
     pdfAcroForm'.FlattenFields()
     let pdfXFA = pdfAcroForm'.GetXfaForm()
     let pdfXFAForm = pdfXFA.Write(pdfAcroForm')
