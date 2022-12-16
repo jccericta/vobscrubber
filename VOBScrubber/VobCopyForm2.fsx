@@ -17,17 +17,35 @@ open iText.Kernel
 open iText.Commons
 open iText.Pdfa
 open iText.Pdfocr
+open PdfSharp.Pdf.IO
 open Microsoft.FSharp.Collections
 open System.Collections.Generic
 
+// Get the document to copy the form to and get its document id
+let docCurrDir = Directory.GetCurrentDirectory()
+let docSource = docCurrDir + @"\pdfs\Kyle Mobley The Edge VOB 02.16.2022.pdf" // will change later
+let docPath = PdfReader.Open(docSource, PdfDocumentOpenMode.InformationOnly).FullPath
+let doc' = PdfReader.Open(docPath, PdfDocumentOpenMode.InformationOnly)
+
+// grab the document's id number or create one
+let guid (d:PdfSharp.Pdf.PdfDocument) = 
+   let guid'= d.Guid
+   if guid'.ToString() = "" then
+      new System.Guid()
+   else  
+      guid'
+
+let docGuid = guid doc'
+doc'.Close()
+
 let currDir = System.IO.Directory.GetCurrentDirectory()
-let vobSampleFile = currDir + @"\pdfs\Test.pdf"
+let vobSampleFile = currDir + @"\Template.pdf"
 let vobSampleReader = new Pdf.PdfReader(vobSampleFile)
 let vobSamplePDF = new Pdf.PdfDocument(vobSampleReader)
-let pdfSourceFile = currDir + @"\pdfs\John Ericta TaxReturn 2021.pdf"
+let pdfSourceFile = currDir + @"\pdfs\Kyle Mobley The Edge VOB 02.16.2022.pdf"
 let pdfSourceReader = new Pdf.PdfReader(pdfSourceFile)
 let pdfSource = new Pdf.PdfDocument(pdfSourceReader)
-let pdfTargetFile = new Pdf.PdfWriter(currDir + @"\pdfs\Copy.pdf")
+let pdfTargetFile = new Pdf.PdfWriter(currDir + @"\pdfs\Kyle Mobley The Edge VOB 02.16.2022" + "." + docGuid.ToString() + ".pdf")
 let pdfTargetWriter = new Pdf.PdfWriter(pdfTargetFile)
 let pdfTarget' = new Pdf.PdfDocument(pdfTargetWriter)
 (*let list:IList<int> = new List<int>()

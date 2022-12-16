@@ -16,7 +16,7 @@ open iText.Pdfocr
 // Take file at path, grab the full path and open the pdf reader stream, then scan for Acro forms
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance)
 let currDir = System.IO.Directory.GetCurrentDirectory()
-let path = currDir + @"\pdfs\Test.pdf"
+let path = currDir + @"\pdfs\Kyle Mobley The Edge VOB 02.16.20223dc28bdb-3f49-48d4-ad7d-853785912aab.pdf"
 let docPath = PdfSharp.Pdf.IO.PdfReader.Open(path, PdfDocumentOpenMode.InformationOnly).FullPath
 let doc = PdfSharp.Pdf.IO.PdfReader.Open(docPath, PdfDocumentOpenMode.InformationOnly)
 let form = doc.AcroForm

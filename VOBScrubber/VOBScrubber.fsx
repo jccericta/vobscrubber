@@ -21,18 +21,20 @@ open iText.Kernel
 // Take file at path, grab the full path and open the pdf reader stream, then scan for Acro forms
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance)
 let currDir = System.IO.Directory.GetCurrentDirectory()
-let path = currDir + @"\pdfs\Test.pdf"
+let path = currDir + @"\pdfs\Kyle Mobley The Edge VOB 02.16.2022.b596af4c-d5f5-4007-bfb6-915e4b79ddd6.pdf"
 let docPath = PdfSharp.Pdf.IO.PdfReader.Open(path, PdfDocumentOpenMode.InformationOnly).FullPath
 let doc = PdfSharp.Pdf.IO.PdfReader.Open(docPath, PdfDocumentOpenMode.InformationOnly)
 let form = doc.AcroForm
 
 // grab the document's id number or create one
-let guid = 
+let guid (doc:PdfSharp.Pdf.PdfDocument) = 
    let guid'= doc.Guid
    if guid'.ToString() = "" then
       new System.Guid()
    else  
       guid'
+
+let docGuid = guid doc
 
 let saveJsonToFile (json:string, path:string) = 
    let fs = new FileStream(path, FileMode.OpenOrCreate)
@@ -40,7 +42,7 @@ let saveJsonToFile (json:string, path:string) =
    fs.Close()
 
 // save json file with json string serialized
-let jsonFile = currDir + @"\json\VOB.Hansei." + guid.ToString() + ".json"
+let jsonFile = currDir + @"\json\VOB.Hansei." + docGuid.ToString() + ".json"
 
 let rec extractText(content:CObject, sb:StringBuilder) =
    match content with
