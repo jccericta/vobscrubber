@@ -5,6 +5,7 @@
 #r @"bin\Debug\net7.0\itext.forms.dll"
 #r @"bin\Debug\net7.0\itext.kernel.dll"
 #r @"bin\Debug\net7.0\itext.io.dll"
+#r @"bin\Debug\net7.0\itext.layout.dll"
 #r @"bin\Debug\net7.0\itext.commons.dll"
 #r @"bin\Debug\net7.0\itext.pdfa.dll"
 #r @"bin\Debug\net7.0\itext.pdfxfa.dll"
@@ -17,6 +18,7 @@ open iText.Kernel
 open iText.Commons
 open iText.Pdfa
 open iText.Pdfocr
+open iText.Layout
 open PdfSharp.Pdf.IO
 open Microsoft.FSharp.Collections
 open System.Collections.Generic
@@ -63,19 +65,27 @@ let copyPages (source:Pdf.PdfDocument) (target:Pdf.PdfDocument) =
 let pdfTarget = copyPages pdfSource pdfTarget'
 let pdfFormCopier = new PdfPageFormCopier()
 let copyPageForm (c:PdfPageFormCopier) (s:Pdf.PdfDocument) (t:Pdf.PdfDocument) = 
-    for i in 1 .. s.GetNumberOfPages() do
-        c.Copy(s.GetPage(i),t.GetPage(i))
-    let pdfAcroForm' = PdfAcroForm.GetAcroForm(t, true)
-    let acfFields = pdfAcroForm'.GetFieldsForFlattening()
+    let pdfAFSource = PdfAcroForm.GetAcroForm(s, false)
+    let pdfAFTarget = PdfAcroForm.GetAcroForm(t, true)
+    let pdfAFSourceFields = pdfAFSource.GetFormFields()
+    printfn "%A" pdfAFSourceFields
+    for pdfAFSourceField in pdfAFSourceFields do
+        let dict = pdfAFSourceFields.Item(pdfAFSourceField.Value.GetFieldName().ToString()).GetPdfObject()
+        pdfAFTarget.AddField(pdfAFSourceField.Value, pdfAFTarget.GetPdfDocument().GetPage(dict))
+    let acfFields = pdfAFTarget.GetFieldsForFlattening()
     for acfField in acfFields do
-        pdfAcroForm'.AddFieldAppearanceToPage(acfField, t.GetPage(t.GetPageNumber(acfField.GetPdfObject())))
-    pdfAcroForm'.FlattenFields()
-    let pdfXFA = pdfAcroForm'.GetXfaForm()
-    let pdfXFAForm = pdfXFA.Write(pdfAcroForm')
+        pdfAFTarget.AddFieldAppearanceToPage(acfField, t.GetPage(t.GetPageNumber(acfField.GetPdfObject())))
+    pdfAFTarget.FlattenFields()
+    for i in 1 .. s.GetNumberOfPages() do
+        c.Copy(pdfAFSource.GetPdfDocument().GetPage(i),pdfAFTarget.GetPdfDocument().GetPage(i))
+    let pdfXFA = pdfAFTarget.GetXfaForm()
+    pdfXFA.Write(pdfAFTarget.GetPdfDocument())
     t.Close()
-    pdfXFAForm
+    //pdfXFAForm
 
 copyPageForm pdfFormCopier vobSamplePDF (pdfTarget.GetDocument())
+
+let newDoc = new Document(pdfTarget.GetDocument())
 
 vobSampleReader.Close()
 vobSamplePDF.Close()
@@ -83,3 +93,4 @@ pdfSourceReader.Close()
 pdfSource.Close()
 pdfTargetWriter.Close()
 pdfTarget.GetDocument().Close()
+newDoc.Close()
